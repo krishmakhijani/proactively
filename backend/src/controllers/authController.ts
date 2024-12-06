@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/authService';
-import { signupSchema, verifyOtpSchema } from '../types/user.types';
+import { signupSchema, verifyOtpSchema , loginSchema } from '../types/user.types';
 
 const authService = new AuthService();
 
@@ -13,6 +13,19 @@ export class AuthController {
                 status: 'success',
                 data: result
             });
+        } catch (error: any) {
+            res.status(400).json({
+                status: 'error',
+                message: error.message
+            });
+        }
+    }
+
+    async login(req: Request, res: Response) {
+        try {
+            const validatedData = loginSchema.parse(req.body);
+            const result = await authService.login(validatedData);
+            res.status(200).json(result);
         } catch (error: any) {
             res.status(400).json({
                 status: 'error',
