@@ -1,31 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-interface CustomRequest extends Request {
-    user?: {
-        userId: string;
-        email: string;
-        role?: string;
-    }
-}
-
-export const auth = async (req: CustomRequest, res: Response, next: NextFunction) => {
+export const auth = (req: Request, res: Response, next: NextFunction) => {
     try {
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
-            return res.status(401).json({
+            res.status(401).json({
                 status: 'error',
                 message: 'Authorization header is missing'
             });
+            return;
         }
 
         const token = authHeader.split(' ')[1];
         if (!token) {
-            return res.status(401).json({
+            res.status(401).json({
                 status: 'error',
                 message: 'Token is missing'
             });
+            return;
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
@@ -37,7 +31,7 @@ export const auth = async (req: CustomRequest, res: Response, next: NextFunction
         req.user = decoded;
         next();
     } catch (error) {
-        return res.status(401).json({
+        res.status(401).json({
             status: 'error',
             message: 'Invalid token'
         });

@@ -14,20 +14,32 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  firstName     String
-  lastName      String
-  password      String
-  role          Role      @default(USER)
-  isVerified    Boolean   @default(false)
-  otp           String?
-  otpExpiry     DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+    id            String    @id @default(cuid())
+    email         String    @unique
+    firstName     String
+    lastName      String
+    password      String
+    role          Role      @default(USER)
+    isVerified    Boolean   @default(false)
+    otp           String?
+    otpExpiry     DateTime?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    speaker       Speaker?  // Relation to Speaker profile
+}
+
+model Speaker {
+    id          String   @id @default(cuid())
+    expertise   String[]
+    pricePerSession  Float
+    bio         String?
+    userId      String   @unique  
+    user        User     @relation(fields: [userId], references: [id])
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 enum Role {
-  USER
-  SPEAKER
+    USER
+    SPEAKER
 }
