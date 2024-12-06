@@ -35,7 +35,7 @@ class AuthService {
                 if (!isPasswordValid) {
                     throw new Error('Invalid credentials');
                 }
-                const token = jsonwebtoken_1.default.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
+                const token = jsonwebtoken_1.default.sign({ userId: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET);
                 return {
                     status: 'success',
                     message: 'Login successful',
