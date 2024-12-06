@@ -6,6 +6,51 @@ import { generateOTP, sendVerificationEmail } from './mailService';
 const prisma = new PrismaClient();
 
 export class AuthService {
+    async login(credentials: { email: string; password: string }) {
+        try {
+            const user = await prisma.user.findUnique({
+                where: { email: credentials.email }
+            });
+
+            if (!user) {
+                throw new Error('Invalid credentials');
+            }
+
+            if (!user.isVerified) {
+                throw new Error('Please verify your email first');
+            }
+
+            const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+
+            if (!isPasswordValid) {
+                throw new Error('Invalid credentials');
+            }
+
+            const token = jwt.sign(
+                { userId: user.id, email: user.email },
+                process.env.JWT_SECRET!
+            );
+
+            return {
+                status: 'success',
+                message: 'Login successful',
+                data: {
+                    token,
+                    user: {
+                        id: user.id,
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        role: user.role,
+                        isVerified: user.isVerified
+                    }
+                }
+            };
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
     async signup(userData: any) {
         try {
             const existingUser = await prisma.user.findUnique({
