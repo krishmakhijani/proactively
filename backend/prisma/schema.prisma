@@ -25,18 +25,30 @@ model User {
     otpExpiry     DateTime?
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
-    speaker       Speaker?  // Relation to Speaker profile
+    speaker       Speaker?
 }
 
 model Speaker {
-    id          String   @id @default(cuid())
-    expertise   String[]
-    pricePerSession  Float
-    bio         String?
-    userId      String   @unique  
-    user        User     @relation(fields: [userId], references: [id])
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    id              String     @id @default(cuid())
+    expertise       String[]
+    pricePerSession Float
+    bio             String?
+    userId          String     @unique
+    user            User       @relation(fields: [userId], references: [id])
+    timeSlots       TimeSlot[]
+    createdAt       DateTime   @default(now())
+    updatedAt       DateTime   @updatedAt
+}
+
+model TimeSlot {
+    id          String    @id @default(cuid())
+    startTime   DateTime
+    endTime     DateTime
+    isBooked    Boolean   @default(false)
+    speakerId   String
+    speaker     Speaker   @relation(fields: [speakerId], references: [id])
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
 }
 
 enum Role {
