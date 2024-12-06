@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
 import speakerRoutes from './routes/speakerRoutes';
+import speakerListingRoutes from './routes/speakerListingRoutes';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/speakers', speakerRoutes);
+app.use('/api/speakers', speakerListingRoutes);
 
 const PORT = process.env.PORT || 3000;
 
