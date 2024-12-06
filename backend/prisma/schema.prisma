@@ -26,6 +26,7 @@ model User {
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
     speaker       Speaker?
+    bookings    Booking[]
 }
 
 model Speaker {
@@ -47,6 +48,16 @@ model TimeSlot {
     isBooked    Boolean   @default(false)
     speakerId   String
     speaker     Speaker   @relation(fields: [speakerId], references: [id])
+    booking     Booking?
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+}
+model Booking {
+    id          String    @id @default(cuid())
+    userId      String
+    user        User      @relation(fields: [userId], references: [id])
+    timeSlotId  String    @unique
+    timeSlot    TimeSlot  @relation(fields: [timeSlotId], references: [id])
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
 }
