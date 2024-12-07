@@ -68,7 +68,7 @@ class AuthService {
                 }
                 const hashedPassword = yield bcrypt_1.default.hash(userData.password, 10);
                 const otp = (0, mailService_1.generateOTP)();
-                const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+                const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
                 const user = yield prisma.user.create({
                     data: Object.assign(Object.assign({}, userData), { password: hashedPassword, otp,
                         otpExpiry })

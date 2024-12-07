@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { startOfDay, endOfDay } from 'date-fns';
+import { startOfDay, endOfDay, format } from 'date-fns';
+import { sendEmail } from './mailService';
+import { bookingEmailTemplates } from '../utils/emailTemplates';
 
 const prisma = new PrismaClient();
 
@@ -7,7 +9,6 @@ export class BookingService {
     async createBooking(userId: string, timeSlotId: string) {
         try {
             return await prisma.$transaction(async (prisma) => {
-
                 const timeSlot = await prisma.timeSlot.findUnique({
                     where: { id: timeSlotId },
                     include: {
@@ -56,8 +57,22 @@ export class BookingService {
 
                 if (existingBooking) {
                     throw new Error(
-                        `You already have a booking on ${existingBooking.timeSlot.startTime.toLocaleDateString()} at ${existingBooking.timeSlot.startTime.toLocaleTimeString()}`
+                        `You already have a booking on ${format(existingBooking.timeSlot.startTime, 'MMMM do, yyyy')} at ${format(existingBooking.timeSlot.startTime, 'h:mm a')}`
                     );
+                }
+
+
+                const user = await prisma.user.findUnique({
+                    where: { id: userId },
+                    select: {
+                        firstName: true,
+                        lastName: true,
+                        email: true
+                    }
+                });
+
+                if (!user) {
+                    throw new Error('User not found');
                 }
 
 
@@ -98,9 +113,34 @@ export class BookingService {
                     data: { isBooked: true }
                 });
 
+
+                const emailData = {
+                    date: format(booking.timeSlot.startTime, 'MMMM do, yyyy'),
+                    startTime: format(booking.timeSlot.startTime, 'h:mm a'),
+                    endTime: format(booking.timeSlot.endTime, 'h:mm a'),
+                    userName: `${booking.user.firstName} ${booking.user.lastName}`,
+                    speakerName: `${booking.timeSlot.speaker.user.firstName} ${booking.timeSlot.speaker.user.lastName}`
+                };
+
+
+                Promise.all([
+                    sendEmail(
+                        booking.user.email,
+                        bookingEmailTemplates.userBookingConfirmation(emailData).subject,
+                        bookingEmailTemplates.userBookingConfirmation(emailData).html
+                    ),
+                    sendEmail(
+                        booking.timeSlot.speaker.user.email,
+                        bookingEmailTemplates.speakerBookingNotification(emailData).subject,
+                        bookingEmailTemplates.speakerBookingNotification(emailData).html
+                    )
+                ]).catch(error => {
+                    console.error('Email notification failed:', error);
+                });
+
                 return {
                     status: 'success',
-                    message: 'Booking created successfully',
+                    message: 'Booking created successfully and notifications sent',
                     data: {
                         id: booking.id,
                         startTime: booking.timeSlot.startTime,

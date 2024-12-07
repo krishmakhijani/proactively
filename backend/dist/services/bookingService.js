@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookingService = void 0;
 const client_1 = require("@prisma/client");
 const date_fns_1 = require("date-fns");
+const mailService_1 = require("./mailService");
+const emailTemplates_1 = require("../utils/emailTemplates");
 const prisma = new client_1.PrismaClient();
 class BookingService {
     createBooking(userId, timeSlotId) {
@@ -58,7 +60,18 @@ class BookingService {
                         }
                     });
                     if (existingBooking) {
-                        throw new Error(`You already have a booking on ${existingBooking.timeSlot.startTime.toLocaleDateString()} at ${existingBooking.timeSlot.startTime.toLocaleTimeString()}`);
+                        throw new Error(`You already have a booking on ${(0, date_fns_1.format)(existingBooking.timeSlot.startTime, 'MMMM do, yyyy')} at ${(0, date_fns_1.format)(existingBooking.timeSlot.startTime, 'h:mm a')}`);
+                    }
+                    const user = yield prisma.user.findUnique({
+                        where: { id: userId },
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            email: true
+                        }
+                    });
+                    if (!user) {
+                        throw new Error('User not found');
                     }
                     const booking = yield prisma.booking.create({
                         data: {
@@ -94,9 +107,22 @@ class BookingService {
                         where: { id: timeSlotId },
                         data: { isBooked: true }
                     });
+                    const emailData = {
+                        date: (0, date_fns_1.format)(booking.timeSlot.startTime, 'MMMM do, yyyy'),
+                        startTime: (0, date_fns_1.format)(booking.timeSlot.startTime, 'h:mm a'),
+                        endTime: (0, date_fns_1.format)(booking.timeSlot.endTime, 'h:mm a'),
+                        userName: `${booking.user.firstName} ${booking.user.lastName}`,
+                        speakerName: `${booking.timeSlot.speaker.user.firstName} ${booking.timeSlot.speaker.user.lastName}`
+                    };
+                    Promise.all([
+                        (0, mailService_1.sendEmail)(booking.user.email, emailTemplates_1.bookingEmailTemplates.userBookingConfirmation(emailData).subject, emailTemplates_1.bookingEmailTemplates.userBookingConfirmation(emailData).html),
+                        (0, mailService_1.sendEmail)(booking.timeSlot.speaker.user.email, emailTemplates_1.bookingEmailTemplates.speakerBookingNotification(emailData).subject, emailTemplates_1.bookingEmailTemplates.speakerBookingNotification(emailData).html)
+                    ]).catch(error => {
+                        console.error('Email notification failed:', error);
+                    });
                     return {
                         status: 'success',
-                        message: 'Booking created successfully',
+                        message: 'Booking created successfully and notifications sent',
                         data: {
                             id: booking.id,
                             startTime: booking.timeSlot.startTime,
