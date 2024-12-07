@@ -4,26 +4,16 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { toast } from 'react-toastify'
 
-export default function SignupPage() {
+export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
     email: "",
-    password: "",
-    role: "USER"
+    password: ""
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,19 +24,12 @@ export default function SignupPage() {
     }))
   }
 
-  const handleRoleChange = (value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      role: value
-    }))
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     try {
       setIsLoading(true)
-      const response = await fetch("http://localhost:3000/api/auth/signup", {
+      const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,8 +43,16 @@ export default function SignupPage() {
         throw new Error(data.message)
       }
 
-      toast.success("Please check your email for OTP verification")
-      router.push(`/verify?email=${formData.email}`)
+      // Store token
+      localStorage.setItem('token', data.data.token)
+      toast.success("Login successful!")
+
+      // Redirect based on role
+      if (data.data.user.role === 'SPEAKER') {
+        router.push('/speaker/profile')
+      } else {
+        router.push('/user/dashboard')
+      }
     } catch (error: any) {
       toast.error(error.message)
     } finally {
@@ -91,7 +82,7 @@ export default function SignupPage() {
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
-              Platform allowing users to book speaker sessions from the available speaker listings
+              Welcome back! Login to access your account
             </p>
           </blockquote>
         </div>
@@ -100,35 +91,13 @@ export default function SignupPage() {
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <Card>
             <CardHeader>
-              <CardTitle>Create an account</CardTitle>
+              <CardTitle>Login</CardTitle>
               <CardDescription>
-                Enter your details to get started
+                Enter your credentials to continue
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">First Name</label>
-                  <Input
-                    required
-                    name="firstName"
-                    placeholder="John"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Last Name</label>
-                  <Input
-                    required
-                    name="lastName"
-                    placeholder="Doe"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Email</label>
                   <Input
@@ -153,29 +122,16 @@ export default function SignupPage() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Role</label>
-                  <Select value={formData.role} onValueChange={handleRoleChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="USER">User</SelectItem>
-                      <SelectItem value="SPEAKER">Speaker</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Creating account..." : "Create account"}
+                  {isLoading ? "Logging in..." : "Login"}
                 </Button>
               </form>
             </CardContent>
             <CardFooter className="flex justify-center">
               <p className="text-sm text-muted-foreground">
-                Already have an account?{" "}
-                <Link href="/login" className="text-primary hover:underline">
-                  Login
+                Dont have an account?{" "}
+                <Link href="/signup" className="text-primary hover:underline">
+                  Sign up
                 </Link>
               </p>
             </CardFooter>

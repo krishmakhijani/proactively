@@ -19,8 +19,9 @@ class BookingService {
     createBooking(userId, timeSlotId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield prisma.$transaction((prisma) => __awaiter(this, void 0, void 0, function* () {
-                    const timeSlot = yield prisma.timeSlot.findUnique({
+                return yield prisma.$transaction((tx) => __awaiter(this, void 0, void 0, function* () {
+                    // First, check if time slot exists and get its date
+                    const timeSlot = yield tx.timeSlot.findUnique({
                         where: { id: timeSlotId },
                         include: {
                             speaker: {
@@ -45,7 +46,7 @@ class BookingService {
                     if (timeSlot.startTime < new Date()) {
                         throw new Error('Cannot book past time slots');
                     }
-                    const existingBooking = yield prisma.booking.findFirst({
+                    const existingBooking = yield tx.booking.findFirst({
                         where: {
                             userId,
                             timeSlot: {
@@ -62,7 +63,7 @@ class BookingService {
                     if (existingBooking) {
                         throw new Error(`You already have a booking on ${(0, date_fns_1.format)(existingBooking.timeSlot.startTime, 'MMMM do, yyyy')} at ${(0, date_fns_1.format)(existingBooking.timeSlot.startTime, 'h:mm a')}`);
                     }
-                    const user = yield prisma.user.findUnique({
+                    const user = yield tx.user.findUnique({
                         where: { id: userId },
                         select: {
                             firstName: true,
@@ -73,7 +74,7 @@ class BookingService {
                     if (!user) {
                         throw new Error('User not found');
                     }
-                    const booking = yield prisma.booking.create({
+                    const booking = yield tx.booking.create({
                         data: {
                             userId,
                             timeSlotId,
@@ -103,7 +104,7 @@ class BookingService {
                             }
                         }
                     });
-                    yield prisma.timeSlot.update({
+                    yield tx.timeSlot.update({
                         where: { id: timeSlotId },
                         data: { isBooked: true }
                     });
@@ -215,7 +216,21 @@ class BookingService {
                         }
                     },
                     include: {
-                        timeSlot: true,
+                        timeSlot: {
+                            include: {
+                                speaker: {
+                                    include: {
+                                        user: {
+                                            select: {
+                                                firstName: true,
+                                                lastName: true,
+                                                email: true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
                         user: {
                             select: {
                                 firstName: true,
