@@ -1,15 +1,43 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma, Booking, User, TimeSlot, Speaker } from '@prisma/client';
 import { startOfDay, endOfDay, format } from 'date-fns';
 import { sendEmail } from './mailService';
 import { bookingEmailTemplates } from '../utils/emailTemplates';
 
 const prisma = new PrismaClient();
 
+type BookingWithRelations = Prisma.BookingGetPayload<{
+    include: {
+        timeSlot: {
+            include: {
+                speaker: {
+                    include: {
+                        user: {
+                            select: {
+                                firstName: true;
+                                lastName: true;
+                                email: true;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        user: {
+            select: {
+                firstName: true;
+                lastName: true;
+                email: true;
+            };
+        };
+    };
+}>;
+
 export class BookingService {
     async createBooking(userId: string, timeSlotId: string) {
         try {
-            return await prisma.$transaction(async (prisma) => {
-                const timeSlot = await prisma.timeSlot.findUnique({
+            return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+                // First, check if time slot exists and get its date
+                const timeSlot = await tx.timeSlot.findUnique({
                     where: { id: timeSlotId },
                     include: {
                         speaker: {
@@ -34,13 +62,11 @@ export class BookingService {
                     throw new Error('Time slot is already booked');
                 }
 
-
                 if (timeSlot.startTime < new Date()) {
                     throw new Error('Cannot book past time slots');
                 }
 
-
-                const existingBooking = await prisma.booking.findFirst({
+                const existingBooking = await tx.booking.findFirst({
                     where: {
                         userId,
                         timeSlot: {
@@ -61,8 +87,7 @@ export class BookingService {
                     );
                 }
 
-
-                const user = await prisma.user.findUnique({
+                const user = await tx.user.findUnique({
                     where: { id: userId },
                     select: {
                         firstName: true,
@@ -75,8 +100,7 @@ export class BookingService {
                     throw new Error('User not found');
                 }
 
-
-                const booking = await prisma.booking.create({
+                const booking = await tx.booking.create({
                     data: {
                         userId,
                         timeSlotId,
@@ -107,12 +131,10 @@ export class BookingService {
                     }
                 });
 
-
-                await prisma.timeSlot.update({
+                await tx.timeSlot.update({
                     where: { id: timeSlotId },
                     data: { isBooked: true }
                 });
-
 
                 const emailData = {
                     date: format(booking.timeSlot.startTime, 'MMMM do, yyyy'),
@@ -121,7 +143,6 @@ export class BookingService {
                     userName: `${booking.user.firstName} ${booking.user.lastName}`,
                     speakerName: `${booking.timeSlot.speaker.user.firstName} ${booking.timeSlot.speaker.user.lastName}`
                 };
-
 
                 Promise.all([
                     sendEmail(
@@ -166,7 +187,7 @@ export class BookingService {
 
     async getUserBookings(userId: string) {
         try {
-            const bookings = await prisma.booking.findMany({
+            const bookings: BookingWithRelations[] = await prisma.booking.findMany({
                 where: { userId },
                 include: {
                     timeSlot: {
@@ -223,14 +244,28 @@ export class BookingService {
 
     async getSpeakerBookings(speakerId: string) {
         try {
-            const bookings = await prisma.booking.findMany({
+            const bookings: BookingWithRelations[] = await prisma.booking.findMany({
                 where: {
                     timeSlot: {
                         speakerId
                     }
                 },
                 include: {
-                    timeSlot: true,
+                    timeSlot: {
+                        include: {
+                            speaker: {
+                                include: {
+                                    user: {
+                                        select: {
+                                            firstName: true,
+                                            lastName: true,
+                                            email: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     user: {
                         select: {
                             firstName: true,
