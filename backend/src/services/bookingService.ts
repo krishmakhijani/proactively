@@ -9,7 +9,6 @@ export class BookingService {
     async createBooking(userId: string, timeSlotId: string) {
         try {
             return await prisma.$transaction(async (prisma) => {
-                // First, check if time slot exists and get its date
                 const timeSlot = await prisma.timeSlot.findUnique({
                     where: { id: timeSlotId },
                     include: {
@@ -35,12 +34,12 @@ export class BookingService {
                     throw new Error('Time slot is already booked');
                 }
 
-                // Check if slot is in the past
+
                 if (timeSlot.startTime < new Date()) {
                     throw new Error('Cannot book past time slots');
                 }
 
-                // Check if user already has a booking for this day
+
                 const existingBooking = await prisma.booking.findFirst({
                     where: {
                         userId,
@@ -62,7 +61,7 @@ export class BookingService {
                     );
                 }
 
-                // Get user details for email
+
                 const user = await prisma.user.findUnique({
                     where: { id: userId },
                     select: {
@@ -76,7 +75,7 @@ export class BookingService {
                     throw new Error('User not found');
                 }
 
-                // Create booking
+
                 const booking = await prisma.booking.create({
                     data: {
                         userId,
@@ -108,13 +107,13 @@ export class BookingService {
                     }
                 });
 
-                // Update time slot to mark as booked
+
                 await prisma.timeSlot.update({
                     where: { id: timeSlotId },
                     data: { isBooked: true }
                 });
 
-                // Prepare email data
+
                 const emailData = {
                     date: format(booking.timeSlot.startTime, 'MMMM do, yyyy'),
                     startTime: format(booking.timeSlot.startTime, 'h:mm a'),
@@ -123,7 +122,7 @@ export class BookingService {
                     speakerName: `${booking.timeSlot.speaker.user.firstName} ${booking.timeSlot.speaker.user.lastName}`
                 };
 
-                // Send emails asynchronously
+
                 Promise.all([
                     sendEmail(
                         booking.user.email,

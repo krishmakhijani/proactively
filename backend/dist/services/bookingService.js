@@ -20,7 +20,6 @@ class BookingService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return yield prisma.$transaction((prisma) => __awaiter(this, void 0, void 0, function* () {
-                    // First, check if time slot exists and get its date
                     const timeSlot = yield prisma.timeSlot.findUnique({
                         where: { id: timeSlotId },
                         include: {
@@ -43,11 +42,9 @@ class BookingService {
                     if (timeSlot.isBooked) {
                         throw new Error('Time slot is already booked');
                     }
-                    // Check if slot is in the past
                     if (timeSlot.startTime < new Date()) {
                         throw new Error('Cannot book past time slots');
                     }
-                    // Check if user already has a booking for this day
                     const existingBooking = yield prisma.booking.findFirst({
                         where: {
                             userId,
@@ -65,7 +62,6 @@ class BookingService {
                     if (existingBooking) {
                         throw new Error(`You already have a booking on ${(0, date_fns_1.format)(existingBooking.timeSlot.startTime, 'MMMM do, yyyy')} at ${(0, date_fns_1.format)(existingBooking.timeSlot.startTime, 'h:mm a')}`);
                     }
-                    // Get user details for email
                     const user = yield prisma.user.findUnique({
                         where: { id: userId },
                         select: {
@@ -77,7 +73,6 @@ class BookingService {
                     if (!user) {
                         throw new Error('User not found');
                     }
-                    // Create booking
                     const booking = yield prisma.booking.create({
                         data: {
                             userId,
@@ -108,12 +103,10 @@ class BookingService {
                             }
                         }
                     });
-                    // Update time slot to mark as booked
                     yield prisma.timeSlot.update({
                         where: { id: timeSlotId },
                         data: { isBooked: true }
                     });
-                    // Prepare email data
                     const emailData = {
                         date: (0, date_fns_1.format)(booking.timeSlot.startTime, 'MMMM do, yyyy'),
                         startTime: (0, date_fns_1.format)(booking.timeSlot.startTime, 'h:mm a'),
@@ -121,7 +114,6 @@ class BookingService {
                         userName: `${booking.user.firstName} ${booking.user.lastName}`,
                         speakerName: `${booking.timeSlot.speaker.user.firstName} ${booking.timeSlot.speaker.user.lastName}`
                     };
-                    // Send emails asynchronously
                     Promise.all([
                         (0, mailService_1.sendEmail)(booking.user.email, emailTemplates_1.bookingEmailTemplates.userBookingConfirmation(emailData).subject, emailTemplates_1.bookingEmailTemplates.userBookingConfirmation(emailData).html),
                         (0, mailService_1.sendEmail)(booking.timeSlot.speaker.user.email, emailTemplates_1.bookingEmailTemplates.speakerBookingNotification(emailData).subject, emailTemplates_1.bookingEmailTemplates.speakerBookingNotification(emailData).html)
