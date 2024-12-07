@@ -8,7 +8,24 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-export const generateOTP = (): string => {
+export const sendEmail = async (to: string, subject: string, html: string) => {
+    try {
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to,
+            subject,
+            html
+        };
+
+        await transporter.sendMail(mailOptions);
+        return true;
+    } catch (error) {
+        console.error('Email sending failed:', error);
+        return false;
+    }
+};
+
+export const generateOTP = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
 };
 

@@ -105,7 +105,6 @@ class SpeakerListingService {
                 }
                 const slots = [];
                 const baseDate = new Date(date);
-                // Generate slots from 9 AM to 4 PM
                 for (let hour = 9; hour < 16; hour++) {
                     const startTime = new Date(baseDate.setHours(hour, 0, 0, 0));
                     const endTime = new Date(baseDate.setHours(hour + 1, 0, 0, 0));
