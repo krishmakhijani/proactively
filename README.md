@@ -75,5 +75,5 @@
 
 You can test the API using Postman. Import the following Postman collection to get started:
 
-[Postman Collection Link]()
+[Postman Collection Link](https://www.postman.com/docking-module-architect-68254037/proactively/collection/valalfk/proactively?action=share&creator=37098253)
 
