@@ -35,7 +35,7 @@ echo "📦 Selected package manager: $PM"
 
 cd backend
 $PM install
-$PM run prisma generate
+$PX prisma generate
 
 $PM run dev &
 BACKEND_PID=$!
