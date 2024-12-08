@@ -80,6 +80,6 @@ You can test the API using Postman. Import the following Postman collection to g
 3. Click on Import
 4. Paste the copied link
 
-[Preview](https://github.com/user-attachments/assets/13a17417-32ea-4fe8-b11a-c34a319029ee)
+[Preview](https://github.com/user-attachments/assets/4dd60de9-4f2d-4088-a2c7-3424a039b233)
 
 
