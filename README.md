@@ -71,9 +71,15 @@
 
 9. To see the Database open [http://localhost:5555](http://localhost:5555) in your browser.
 
-## API Testing
+## API Testing Steps
 
 You can test the API using Postman. Import the following Postman collection to get started:
 
-[Postman Collection Link](https://www.postman.com/docking-module-architect-68254037/proactively/collection/valalfk/proactively?action=share&creator=37098253)
+1. Copy the given json link : ```https://raw.githubusercontent.com/krishmakhijani/proactively/refs/heads/main/krishmakhijani.json```
+2. Open Postman
+3. Click on Import
+4. Paste the copied link
+
+- Preview Video : [https://github.com/user-attachments/assets/13a17417-32ea-4fe8-b11a-c34a319029ee]
+
 
