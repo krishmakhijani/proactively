@@ -1,0 +1,601 @@
+{
+	"info": {
+		"_postman_id": "b2566841-aa61-4fba-a18d-3416e39734ab",
+		"name": "Proactively",
+		"description": "API Testing Documentation for Proactively Backend Assignment\n\nClick on View Complete Documentation for all the details",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37098253"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Signup",
+					"item": [
+						{
+							"name": "USER-SUCCESS-SIGNUP",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Krish\",\n    \"lastName\": \"Makhijani\",\n    \"email\": \"km5652@srmist.edu.in\",\n    \"password\": \"krish1204\",\n    \"role\": \"USER\"\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/auth/signup",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"signup"
+									]
+								},
+								"description": "Use this to signup as a user with the post request and body as json"
+							},
+							"response": []
+						},
+						{
+							"name": "SPEAKER-SUCCESS-SIGNUP",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Krish\",\n    \"lastName\": \"Makhijani\",\n    \"email\": \"makhijanikrish001@gmail.com\",\n    \"password\": \"krish1204\",\n    \"role\": \"SPEAKER\"\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/auth/signup",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"signup"
+									]
+								},
+								"description": "Use this to signup as a user with the post request and body as json"
+							},
+							"response": []
+						}
+					],
+					"description": "This folder allows email to signup as a speaker or user"
+				},
+				{
+					"name": "OTP-VERIFY",
+					"item": [
+						{
+							"name": "USER-SUCCESS-OTP-VERIFY",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"km5652@srmist.edu.in\",\n    \"otp\": \"650658\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/auth/verify-otp",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"verify-otp"
+									]
+								},
+								"description": "1. Check your email through which you have signeup\n    \n2. Get the otp from the mail and past in the otp section present in the body\n    \n3. Check the status if you are verified or not in the database table (Open [http://localhost:5555](http://localhost:5555) to check the database table or npx prisma studio in backend folder the open [http://localhost:5555](http://localhost:5555) )"
+							},
+							"response": []
+						},
+						{
+							"name": "SPEAKER-SUCCESS-OTP-VERIFY",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"makhijanikrish001@gmail.com\",\n    \"otp\": \"113690\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/auth/verify-otp",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"verify-otp"
+									]
+								},
+								"description": "1. Check your email through which you have signeup\n    \n2. Get the otp from the mail and past in the otp section present in the body\n    \n3. Check the status if you are verified or not in the database table (Open [http://localhost:5555](http://localhost:5555) to check the database table or npx prisma studio in backend folder the open [http://localhost:5555](http://localhost:5555) )"
+							},
+							"response": []
+						}
+					],
+					"description": "This folder contains APIs for Speaker and User to verify themselves"
+				},
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "USER-LOGIN-SUCCESS",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"km5652@srmist.edu.in\",\n    \"password\": \"krish1204\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								},
+								"description": "1. Use the same login email address and password to login as a user or speaker\n    \n2. Save the token you will get from the reposnse to use as the authentication header"
+							},
+							"response": []
+						},
+						{
+							"name": "SPEAKER-LOGIN-SUCCESS",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"makhijanikrish001@gmail.com\",\n    \"password\": \"krish1204\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								},
+								"description": "1. Use the same login email address and password to login as a user or speaker\n    \n2. Save the token you will get from the reposnse to use as the authentication header"
+							},
+							"response": []
+						}
+					],
+					"description": "This folder contains APIs for all the user to login to their account"
+				}
+			],
+			"description": "Contains All Users Signup , Login , OTP-VERFIY and SPEAKER Details APIs"
+		},
+		{
+			"name": "Speaker",
+			"item": [
+				{
+					"name": "AUTH-ERROR",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbTRkOXFsZjIwMDAyc2dzZGR4ZmdmcW9wIiwiZW1haWwiOiJtYWtoaWphbmlrcmlzaDAwMUBnbWFpbC5jb20iLCJpYXQiOjE3MzM1MjIxMTJ9.zPCCM3-D1rQDXFr8f3Q562X7KWBTsRPBUimMRMga6Xk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expertise\": [\"Classical\", \"Jazz\", \"HipHop\"],\n    \"pricePerSession\": 100.00,\n    \"bio\": \"Experienced Singer with 5 years of singing experience\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/speakers/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"speakers",
+								"profile"
+							]
+						},
+						"description": "In this you can see what will you get in the response if you dont use the Authentication Header"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE-SPEAKER-PROFILE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbTRkOXFsZjIwMDAyc2dzZGR4ZmdmcW9wIiwiZW1haWwiOiJtYWtoaWphbmlrcmlzaDAwMUBnbWFpbC5jb20iLCJyb2xlIjoiU1BFQUtFUiIsImlhdCI6MTczMzUyNTQ4NX0.O3RkPCEaCUWzhsZIU2mGKjJwS8dnxRuiwuzkqUYeJoE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expertise\": [\"Classical\", \"Jazz\", \"HipHop\"],\n    \"pricePerSession\": 100.00,\n    \"bio\": \"Experienced Singer with 5 years of singing experience\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/speakers/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"speakers",
+								"profile"
+							]
+						},
+						"description": "1. In the Header Section use Key:Authentication and Value : Bearer {token} (token you get from the login endpoint response)\n    \n2. Add your expertise , Price per Session and bio in body and hit the API to see the response"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE-SPEAKER-PROFILE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbTRkOXFsZjIwMDAyc2dzZGR4ZmdmcW9wIiwiZW1haWwiOiJtYWtoaWphbmlrcmlzaDAwMUBnbWFpbC5jb20iLCJyb2xlIjoiU1BFQUtFUiIsImlhdCI6MTczMzUyNTQ4NX0.O3RkPCEaCUWzhsZIU2mGKjJwS8dnxRuiwuzkqUYeJoE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expertise\": [\"Classical\", \"Jazz\", \"HipHop\",\"Punjabi\"],\n    \"pricePerSession\": 100.00,\n    \"bio\": \"Experienced Singer with 5 years of singing experience\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/speakers/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"speakers",
+								"profile"
+							]
+						},
+						"description": "1. In the Header Section use Key:Authentication and Value : Bearer {token} (token you get from the login endpoint response)\n    \n2. Add your expertise , Price per Session and bio in body and hit the API to see the response"
+					},
+					"response": []
+				},
+				{
+					"name": "GET-SPEAKER-PROFILE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbTRkOXFsZjIwMDAyc2dzZGR4ZmdmcW9wIiwiZW1haWwiOiJtYWtoaWphbmlrcmlzaDAwMUBnbWFpbC5jb20iLCJyb2xlIjoiU1BFQUtFUiIsImlhdCI6MTczMzUyNTQ4NX0.O3RkPCEaCUWzhsZIU2mGKjJwS8dnxRuiwuzkqUYeJoE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/speakers/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"speakers",
+								"profile"
+							]
+						},
+						"description": "1. In the Header Section use Key:Authentication and Value : Bearer {token} (token you get from the login endpoint response)\n    \n2. Hit the endpoint to see the Profile Speake (You) has created"
+					},
+					"response": []
+				}
+			],
+			"description": "Speaker related APIs"
+		},
+		{
+			"name": "Time Slot",
+			"item": [
+				{
+					"name": "SPEAKER-TIMESLOT-ADD",
+					"item": [
+						{
+							"name": "TIMESLOT-ADD",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbTRkOXFsZjIwMDAyc2dzZGR4ZmdmcW9wIiwiZW1haWwiOiJtYWtoaWphbmlrcmlzaDAwMUBnbWFpbC5jb20iLCJyb2xlIjoiU1BFQUtFUiIsImlhdCI6MTczMzUyNTQ4NX0.O3RkPCEaCUWzhsZIU2mGKjJwS8dnxRuiwuzkqUYeJoE",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"date\": \"2024-12-22\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/speakers/cm4dcc5a00001sghfrw2kyw1r/time-slots",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"speakers",
+										"cm4dcc5a00001sghfrw2kyw1r",
+										"time-slots"
+									]
+								},
+								"description": "1. Sample endpoint is /api/speaker/:speakeID/time-slots\n    \n2. During login endpoint reponse for the speaker you can see in the user object id is present replace :speakerID with the id\n    \n3. In the Header Section use Key:Authentication and Value : Bearer {token} (token you get from the login endpoint response)\n    \n4. Add the date in the body and hit the endpoint to add 7 slot each of 1hr from 9am to 4 pm"
+							},
+							"response": []
+						}
+					],
+					"description": "Speake Time slot related APIs"
+				},
+				{
+					"name": "GET-SPEAKERS-WITH-PAGINATION",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/speakers?page=1&limit=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"speakers"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						},
+						"description": "This request doesn't require any header you can directly hit the API endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "VIEW-ALL-SPEAKERS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/speakers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"speakers"
+							]
+						},
+						"description": "This request doesn't require any header you can directly hit the API endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "VIEW-AVAILABLE-TIMESLOT",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/speakers?date=2024-12-18",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"speakers"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2024-12-18"
+								}
+							]
+						},
+						"description": "This request doesn't require any header you can directly hit the API endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "AVAILABILITY-FILTER",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/speakers?expertise=Jazz",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"speakers"
+							],
+							"query": [
+								{
+									"key": "expertise",
+									"value": "Jazz"
+								}
+							]
+						},
+						"description": "This request doesn't require any header you can directly hit the API endpoint"
+					},
+					"response": []
+				}
+			],
+			"description": "Speake Time slot related APIs"
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "NEW-BOOKING-SUCCES",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbTRkcnVzd3MwMDBhc2c2bjByNTVsb3J2IiwiZW1haWwiOiJrbTU2NTJAc3JtaXN0LmVkdS5pbiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMzNTU0MDY2fQ.2WaJkUcnv-QT7e6FYWKG20_Suytd3_8cxnKFTp8sy3E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timeSlotId\": \"cm4drtdv60004sg6n5mt9z01h\"  \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/booking",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"booking"
+							]
+						},
+						"description": "1. In the Header Section use Key:Authentication and Value : Bearer {token} (token you get from the login endpoint response)\n    \n2. Copy the Timeslotid by hitting the VIEW-AVAILABLE-TIMESLOT than in speaker object timeslot object is present in that unique id copy it and paste it in the body and hit the api to book the speaker\n    \n3. You will receive an email for confirmation"
+					},
+					"response": []
+				},
+				{
+					"name": "ONE-BOOKING-PER-DAY-VERIFY",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbTRkOWt4bWYwMDAxc2dzZDJzczNtem5vIiwiZW1haWwiOiJrbTU2NTJAc3JtaXN0LmVkdS5pbiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMzNTI5OTYwfQ.Hlwg7RCgHwQ4ZUOiEedCg_4k9IhFJlSoLJluorGG4xE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timeSlotId\": \"cm4ddekkr0002sg8suvgas0k6\"  \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/booking",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"booking"
+							]
+						},
+						"description": "1. In the Header Section use Key:Authentication and Value : Bearer {token} (token you get from the login endpoint response)\n    \n2. This is check that the user should have only one booking per day if the user already booked a speaker it won't allow you to book another speaker that day"
+					},
+					"response": []
+				}
+			],
+			"description": "Bookig related APIs"
+		}
+	]
+}
