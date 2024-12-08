@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Proactively - Assignment
 
-## Getting Started
+## Preview
 
-First, run the development server:
+![Frontend](https://github.com/user-attachments/assets/60d49ed4-80f2-4de5-a952-f225b656ecfd)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Frontend](https://github.com/user-attachments/assets/df9035c9-86ba-46af-9755-dd1d1672ad7f)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+> [!WARNING]
+> Made ```.env``` files public for the convenience of the reviewer. This is not recommended in a production environment.
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend
+- Node.js
+- Express
+- Prisma
+- TypeScript
+- PostgreSQL (Database)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Frontend
+- Next.js
+- React
+- Tailwind CSS
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm (v7 or higher)
+- pnpm (v6 or higher)(recommended)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Installation Steps
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/krishmakhijani/proactively.git
+    cd proactively
+    ```
+
+2. Install Backend Dependencies
+    ```sh
+    cd backend
+    npm install
+    npx prisma generate
+    ```
+
+3. Install Frontend Dependencies
+    ```sh
+    cd frontend
+    npm install
+    ```
+4. Start the Backend Server
+    ```sh
+    cd backend
+    npm run dev
+    ```
+5. Start the Frontend Server
+    ```sh
+    cd frontend
+    npm run dev
+    ```
+6. Open [http://localhost:3001](http://localhost:3001) in your browser to see the frontend.
+
+> [!NOTE]
+> Step 5 and Step 6 should be run in separate terminals but both processes should be running simultaneously.
+
+8. Backend running on [http://localhost:3000](http://localhost:3000).
+
+9. To see the Database open [http://localhost:5555](http://localhost:5555) in your browser.
+
+## API Testing
+
+You can test the API using Postman. Import the following Postman collection to get started:
+
+[Postman Collection Link]()
+
