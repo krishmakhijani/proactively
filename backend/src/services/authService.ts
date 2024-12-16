@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient} from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { generateOTP, sendVerificationEmail } from './mailService';
@@ -63,7 +63,7 @@ export class AuthService {
 
             const hashedPassword = await bcrypt.hash(userData.password, 10);
             const otp = generateOTP();
-            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); 
+            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
             const user = await prisma.user.create({
                 data: {
